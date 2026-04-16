@@ -1,0 +1,85 @@
+# Agno 项目 Docker 一键部署方案
+
+## 部署步骤
+
+### 1. 创建 Dockerfile
+
+```dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 8000
+
+CMD ["python", "agno_assist.py"]
+```
+
+### 2. 创建 requirements.txt 文件
+
+```
+asyncio
+agno
+```
+
+### 3. 创建 docker-compose.yml 文件
+
+```yaml
+version: '3.8'
+
+services:
+  agno-assist:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./agno.db:/app/agno.db"
+    environment:
+      - API_KEY=sk-23b983e9ff4b4aabb646f1380bea2f93.FCAYtWaD0wJzGtqS
+      - BASE_URL=https://open.bigmodel.cn/api/paas/v4/
+    restart: unless-stopped
+```
+
+### 4. 部署命令
+
+```bash
+# 构建并启动容器
+docker-compose up -d
+
+# 查看容器状态
+docker-compose ps
+
+# 查看容器日志
+docker-compose logs -f
+
+# 停止容器
+docker-compose down
+```
+
+### 5. 访问方式
+
+部署完成后，可以通过以下地址访问：
+- Web 界面：http://localhost:8000
+- API 接口：http://localhost:8000/api
+
+## 注意事项
+
+1. 确保 Docker 和 Docker Compose 已安装
+2. 检查网络连接，确保能够访问 OpenAI API
+3. 首次部署时会自动创建 agno.db 数据库文件
+4. 如需修改配置，可编辑 docker-compose.yml 文件中的环境变量
+
+## 项目结构
+
+```
+./
+├── agno_assist.py       # 主应用文件
+├── agno.db             # 数据库文件
+├── index.html          # Web 界面
+├── Dockerfile          # Docker 构建文件
+├── requirements.txt    # 依赖文件
+└── docker-compose.yml  # 容器编排文件
+```
