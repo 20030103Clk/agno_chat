@@ -17,7 +17,7 @@ from textwrap import dedent
 db = AsyncSqliteDb(db_file="agno.db")
 model = OpenAILike(
     id="glm-4.7-flash",
-    api_key="sk-23b983e9ff4b4aabb646f1380bea2f93.FCAYtWaD0wJzGtqS",
+    api_key="sk-key",
     base_url="https://open.bigmodel.cn/api/paas/v4/",
     max_tokens=256,
     temperature=0.7, #更有人味,地温度
